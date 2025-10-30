@@ -1,0 +1,140 @@
+Here is a list of common ADB commands, categorized by their function, with explanations for each.
+
+1. 🔌 Device & Server Management
+These commands control the ADB server itself and manage the list of connected devices.
+
+adb devices
+
+Explanation: This is the most fundamental command. It lists all Android devices (both emulators and physical devices) currently connected to your computer.
+
+Output: It shows a serial number for each device and its connection state (device, offline, or unauthorized).
+
+adb kill-server
+
+Explanation: This command stops the ADB server process on your computer. This is often the first step in troubleshooting when ADB can't find your device.
+
+adb start-server
+
+Explanation: This manually starts the ADB server. Most other ADB commands will start it automatically if it's not running, but this is useful for debugging connection issues.
+
+adb connect <ip_address>
+
+Explanation: This allows you to connect to a device over Wi-Fi (after enabling "Wireless debugging" on the device). For example: adb connect 192.168.1.100.
+
+adb disconnect <ip_address>
+
+Explanation: Disconnects from a device you previously connected to over Wi-Fi.
+
+adb reboot
+
+Explanation: Reboots the connected device.
+
+adb reboot bootloader
+
+Explanation: Reboots the device directly into its bootloader menu (used for unlocking or flashing system images).
+
+adb reboot recovery
+
+Explanation: Reboots the device directly into its recovery mode (used for applying updates or system resets).
+
+2. 📦 App (Package) Management
+These commands are for installing, uninstalling, and managing applications (APKs) on your device.
+
+adb install <path_to_apk>
+
+Explanation: Installs an application onto your device. You must provide the full path to the .apk file on your computer.
+
+Example: adb install C:\Downloads\my-app.apk
+
+Common Option: Use -r (e.g., adb install -r my-app.apk) to reinstall an existing app, keeping its data.
+
+adb uninstall <package_name>
+
+Explanation: Uninstalls an application from your device. You must use the app's official package name, not the app's friendly name.
+
+Example: adb uninstall com.google.android.youtube
+
+Common Option: Use -k (e.g., adb uninstall -k com.example.app) to uninstall the app but keep its data and cache files.
+
+adb shell pm list packages
+
+Explanation: Lists all applications (by their package name) installed on the device.
+
+Common Option: Use -3 (e.g., adb shell pm list packages -3) to list only third-party (non-system) apps you've installed.
+
+adb shell pm clear <package_name>
+
+Explanation: Clears all data for a specific application, restoring it to a "fresh install" state. This is the same as going to "App Info > Storage > Clear Data" in the device settings.
+
+3. 📁 File Management
+These commands let you move files between your computer and the Android device.
+
+adb push <local_path> <remote_path>
+
+Explanation: "Pushes" (copies) a file or directory from your computer to the device.
+
+Example: adb push C:\photo.jpg /sdcard/Pictures/
+
+adb pull <remote_path> <local_path>
+
+Explanation: "Pulls" (copies) a file or directory from the device to your computer.
+
+Example: adb pull /sdcard/DCIM/Camera/IMG_123.jpg C:\MyPhotos\
+
+4. 🐞 Debugging & Shell Access
+These are powerful commands for logging, debugging, and interacting directly with the device's underlying Linux shell.
+
+adb shell
+
+Explanation: This is one of the most powerful commands. It opens a remote command-line shell directly on your Android device. From here, you can run many standard Linux commands (like ls to list files, cd to change directories, rm to remove files) and Android-specific commands (like pm and am mentioned below).
+
+To exit the shell: Type exit and press Enter.
+
+adb shell <command>
+
+Explanation: Lets you run a single shell command without opening the full interactive shell.
+
+Example: adb shell ls /sdcard/ (This runs the ls command on the device to list the contents of the /sdcard/ directory).
+
+adb logcat
+
+Explanation: Dumps a continuous, real-time stream of your device's system logs to your terminal. This is incredibly useful for debugging app crashes, as it will show error messages and stack traces.
+
+To stop it: Press Ctrl+C.
+
+Common Option: Use adb logcat *:E to show only Error-level logs, filtering out the noise.
+
+adb shell am start -n <package_name>/<activity_name>
+
+Explanation: Uses the Activity Manager (am) to start a specific "page" (Activity) of an application. This is useful for launching directly into a specific part of your app for testing.
+
+Example: adb shell am start -n com.google.android.calculator/com.android.calculator2.Calculator
+
+adb shell am force-stop <package_name>
+
+Explanation: Forcibly stops all processes associated with an application. This is the equivalent of "Force Stop" in the device settings.
+
+adb shell dumpsys
+
+Explanation: A powerful diagnostic tool that "dumps" a massive amount of information about the status of various system services.
+
+Example: adb shell dumpsys battery will print detailed information about your device's battery state (level, temperature, charging status, etc.).
+
+5. 📸 Screen & Media
+These commands are for capturing what's happening on the device's screen.
+
+adb shell screencap /sdcard/screenshot.png
+
+Explanation: Takes a screenshot of the device's current display and saves it to a file on the device (in this case, /sdcard/screenshot.png).
+
+Note: This just saves it on the device. You'll need to use adb pull to get it onto your computer.
+
+adb shell screenrecord /sdcard/my_video.mp4
+
+Explanation: Starts recording the device's screen as an MP4 video file, saved on the device.
+
+To stop it: Press Ctrl+C in your terminal.
+
+Note: This has a 3-minute time limit by default.
+
+Would you like me to show you how to combine some of these commands, for example, how to take a screenshot and pull it to your computer with one line?
